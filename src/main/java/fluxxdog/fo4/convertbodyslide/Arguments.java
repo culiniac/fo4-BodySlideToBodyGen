@@ -1,19 +1,21 @@
+package fluxxdog.fo4.convertbodyslide;
+
 import java.io.File;
 
-public class Arguments {
+class Arguments {
     private final int variance;
     private final File file;
 
-    public Arguments(String filename, String variance) {
+    Arguments(String filename, String variance) {
         this.file = new File(filename);
         this.variance = Integer.parseInt(variance);
     }
 
-    public File getFile() {
+    File getFile() {
         return file;
     }
 
-    public int getVariance() {
+    int getVariance() {
         return variance;
     }
 }
