@@ -1,8 +1,11 @@
-import java.io.File;
+package fluxxdog.fo4.convertbodyslide;
 
-public class SlideToGen {
-    public static void main(String... args) {
-        Arguments arguments;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+class SlideToGen {
+    public static void main(String[] args) throws Exception {
+        Arguments arguments = null;
         switch (args.length) {
             case 0:
                 showHelp();
@@ -10,17 +13,23 @@ public class SlideToGen {
             case 1:
                 if (args[0].matches("--?(\\?|h(elp)?)")) {
                     showHelp();
+                    break;
                 }
                 arguments = new Arguments(args[0], "0");
                 break;
             default:
                 if (!args[1].matches("\\d\\d?")) {
-                    throw new IllegalArgumentException("Variance must be a 1 or 2 digit number (percentage)");
+                    showHelp();
+                    break;
                 }
                 arguments = new Arguments(args[0], args[1]);
         }
+        assert arguments != null;
 
-        ProcessSliders.convertToBodyGen
+        MappedPresets mappedPresets = ProcessSliders.convertToBodyGenTemplates(arguments);
+        String outgoingName = arguments.getFile().getName() + ".templates.ini";
+        Files.write(Paths.get(outgoingName), mappedPresets.toString().getBytes());
+        System.out.println();
     }
 
     private static void showHelp() {
